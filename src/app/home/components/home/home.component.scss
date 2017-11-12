@@ -1,0 +1,43 @@
+/* Structure */
+.example-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  min-width: 300px;
+}
+
+.example-header {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+  font-size: 20px;
+}
+
+.example-header {
+  min-height: 64px;
+  display: flex;
+  align-items: baseline;
+  padding: 8px 24px 0;
+  font-size: 20px;
+  justify-content: space-between;
+}
+
+.mat-input-container {
+  font-size: 14px;
+  flex-grow: 1;
+  margin-left: 32px;
+}
+
+.mat-table {
+  overflow: auto;
+}
+
+.highlight{
+  background: #2196F3; /* green */
+}
+
+.md-title{
+background-image: url("https://www.google.bg/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwjH35im3LfXAhWBnRQKHQr9D2IQjRwIBw&url=https%3A%2F%2Fgadgets.ndtv.com%2Fapple-iphone-x-4258&psig=AOvVaw2_CRpqSzWNlNnQGfk1NBEg&ust=1510530894980532");
+background-repeat: repeat-y
+}
