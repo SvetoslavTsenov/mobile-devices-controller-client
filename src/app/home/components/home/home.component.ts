@@ -13,8 +13,8 @@ export class HomeComponent implements OnInit {
 
     hosts = [
         { name: "svs", url: "http://localhost:8000" },
-        { name: "svs1", url: "http://localhost:8000" },
-        { name: "svs2", url: "http://localhost:8000" },
+        { name: "svs1", url: "http://localhost:8001" },
+        { name: "svs2", url: "http://localhost:8001" },
     ];
 
     loading = true;
@@ -38,8 +38,10 @@ export class HomeComponent implements OnInit {
         this.loading = true;
         this.dataSource = new MatTableDataSource();
         this._context.getDevices(this.selectedHost['url']).subscribe(
-            data => {
+            (data) => {
                 this.dataSource = new MatTableDataSource(data);
+                this.loading = false;
+            },(error)=>{
                 this.loading = false;
             }
         );
@@ -68,7 +70,7 @@ export class HomeComponent implements OnInit {
         this._context.bootDevice(this.selectedHost['url'], 'platform', this.selectedDevice['_platform'], 'token', this.selectedDevice['_token'], "name", this.selectedDevice['_name'])
             .subscribe((d) => {
                 this.selectedDevice = d[0];
-                this.dataSource.data.find(d[0]['token'])[0] = d
+                this.dataSource.data.find((v)=>{ return v === d[0]})[0] = d
                 console.log(d[0]);
             });
     }
