@@ -11,6 +11,7 @@ import {
     MatSelectModule,
     MatButtonModule,
     MatCardModule,
+    MatProgressSpinnerModule
 
 } from '@angular/material';
 
@@ -24,6 +25,7 @@ import {
         MatSelectModule,
         MatButtonModule,
         MatCardModule,
+        MatProgressSpinnerModule,
         ...SHARED_MODULES
     ],
 

@@ -1,50 +1,73 @@
-<div class="example-container mat-elevation-z8">
-    <div class="example-header">
+<div class="flex-container">
+
+    <div class="container">
         <mat-form-field>
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+            <mat-select placeholder="host address" [(ngModel)]="selectedHost" (change)="hostChange($event)">
+                <mat-option *ngFor="let host of hosts" [value]="host">
+                    <p> {{ host.name }} {{ host.url }} </p>
+                </mat-option>
+            </mat-select>
         </mat-form-field>
     </div>
 
-    <mat-table #table [dataSource]="dataSource">
+    <div class="container example-container mat-elevation-z8">
+        <div class="example-header">
+            <mat-form-field>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+            </mat-form-field>
+        </div>
 
-        <ng-container matColumnDef="_status">
-            <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element._status}} </mat-cell>
-        </ng-container>
+        <mat-table #table [dataSource]="dataSource">
 
-        <ng-container matColumnDef="_name">
-            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element._name}} </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="_status">
+                <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element._status}} </mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="_token">
-            <mat-header-cell *matHeaderCellDef> Token </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element._token}} </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="_name">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element._name}} </mat-cell>
+            </ng-container>
 
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex === row._token}" (click)="highlight(row)">
-        </mat-row>
-    </mat-table>
+            <ng-container matColumnDef="_token">
+                <mat-header-cell *matHeaderCellDef> Token </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element._token}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex === row._token}" (click)="highlight(row)">
+            </mat-row>
+        </mat-table>
+        <mat-spinner class="spinner" *ngIf='loading'></mat-spinner>
+
+    </div>
+
+    <div class="container" *ngIf="selectedDevice!==undefined">
+        <mat-card class="example-card">
+            <mat-card-header>
+                <div mat-card-avatar class="md-title"></div>
+                <mat-card-title>{{ selectedDevice._name }}</mat-card-title>
+                <mat-card-subtitle>{{ selectedDevice._token }}</mat-card-subtitle>
+            </mat-card-header>
+            <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+            <mat-card-content>
+                <p>
+                    {{ selectedDevice._status }}
+                </p>
+                <p>
+                    {{ selectedDevice._busySince }}
+                </p>
+                <p>
+                    {{ selectedDevice._startedAt}}
+                </p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button (click)="stop()">STOP</button>
+                <button mat-button (click)="boot()">BOOT</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
 </div>
-
-
-<mat-card class="example-card">
-    <mat-card-header>
-        <div mat-card-avatar class="md-title"></div>
-        <mat-card-title>{{ selectedDevice._name }}</mat-card-title>
-        <mat-card-subtitle>{{ selectedDevice._token }}</mat-card-subtitle>
-    </mat-card-header>
-    <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-    <mat-card-content>
-        <p>
-            {{ selectedDevice._status }}
-        </p>
-    </mat-card-content>
-    <mat-card-actions>
-        <button mat-button (click)="update()">update</button>
-    </mat-card-actions>
-</mat-card>
 
 <!-- 
 <div class="example-container">

@@ -9,11 +9,11 @@ export class ServiceClient extends ServiceClientBase {
     super(_http);
   }
 
-  get<T>(controller, ...args): Observable<T> {
-    return this.http.get<T>(`${this.endPoint}/${controller}`, ServiceClientBase.getRequestOptions(args));
+  get<T>(baseUrl, controller, ...args): Observable<T> {
+    return this.http.get<T>(`${baseUrl}/${this.endPoint}/${controller}`, ServiceClientBase.getRequestOptions(...args));
   }
 
-  post(controller, body, ...args) {
-    this.http.post(`${this.endPoint}/${controller}`, body).subscribe();
+  post(baseUrl, controller, body, ...args) {
+    this.http.post(`${baseUrl}/${this.endPoint}/${controller}`, body).subscribe();
   }
 }

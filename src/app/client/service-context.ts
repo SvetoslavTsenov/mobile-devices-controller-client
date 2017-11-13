@@ -11,7 +11,15 @@ export class ServiceContext {
 
     constructor(private _serviceClient: ServiceClient) { }
 
-    getDevices(...args): Observable<any> {
-        return this._serviceClient.get<any>(ServiceContext.DEVICES_CONTROLLER, ...args);
+    getDevices(baseUrl, ...args): Observable<any> {
+        return this._serviceClient.get<any>(baseUrl, ServiceContext.DEVICES_CONTROLLER, ...args);
+    }
+
+    stopDevice(baseUrl, ...args): Observable<any> {
+        return this._serviceClient.get<any>(baseUrl, `${ServiceContext.DEVICES_CONTROLLER}/kill`, ...args);
+    }
+
+    bootDevice(baseUrl, ...args): Observable<any> {
+        return this._serviceClient.get<any>(baseUrl, `${ServiceContext.DEVICES_CONTROLLER}/boot`, ...args);
     }
 }

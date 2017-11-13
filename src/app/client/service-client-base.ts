@@ -4,8 +4,8 @@ import { Observable } from "rxjs";
 export class ServiceClientBase {
     private static API = 'api';
     private static VERSION = 'v1';
-    private static REST_URL = 'http://localhost:8000';
-    private _endPoint: string = `${ServiceClientBase.REST_URL}/${ServiceClientBase.API}/${ServiceClientBase.VERSION}`;
+   // private static REST_URL = 'http://localhost:8000';
+    private _endPoint: string = `${ServiceClientBase.API}/${ServiceClientBase.VERSION}`;
 
     constructor(private _http: HttpClient) { }
 
