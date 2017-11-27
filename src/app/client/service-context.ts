@@ -15,6 +15,14 @@ export class ServiceContext {
         return this._serviceClient.get<any>(baseUrl, ServiceContext.DEVICES_CONTROLLER, ...args);
     }
 
+    getDevicesByQuerry(baseUrl, args): Observable<any> {
+        return this._serviceClient.getByQuerry<any>(baseUrl, ServiceContext.DEVICES_CONTROLLER, args);
+    }
+
+    update(baseUrl, token, device) {
+        return this._serviceClient.update<any>(baseUrl, `${ServiceContext.DEVICES_CONTROLLER}/udpate`, token, device);
+    }
+
     stopDevice(baseUrl, ...args): Observable<any> {
         return this._serviceClient.get<any>(baseUrl, `${ServiceContext.DEVICES_CONTROLLER}/kill`, ...args);
     }

@@ -13,16 +13,16 @@ export class HomeComponent implements OnInit {
 
     hosts = [
         { name: "svs", url: "http://localhost:8000" },
-        { name: "svs1", url: "http://localhost:8001" },
-        { name: "svs2", url: "http://localhost:8001" },
+
     ];
 
-    loading = true;
-    displayedColumns = ['_status', '_name', '_token'];
+    loading = false;
+    displayedColumns = ['status', 'name', 'token'];
     selectedRowIndex: any = -1;
     selectedHost: any;
     selectedDevice = {};
     dataSource = new MatTableDataSource();
+    searchedQuery: { platform, apiLevel, name, status } = { platform: undefined, apiLevel: undefined, name: undefined, status: undefined };
 
     constructor(private _context: ServiceContext) {
     }
@@ -34,17 +34,21 @@ export class HomeComponent implements OnInit {
         this.hostChange(undefined);
     }
 
-    hostChange(value: any) {
+    find(any) {
         this.loading = true;
         this.dataSource = new MatTableDataSource();
-        this._context.getDevices(this.selectedHost['url']).subscribe(
+        this._context.getDevicesByQuerry(this.selectedHost['url'], this.searchedQuery).subscribe(
             (data) => {
                 this.dataSource = new MatTableDataSource(data);
                 this.loading = false;
-            },(error)=>{
+            }, (error) => {
                 this.loading = false;
             }
         );
+
+    }
+
+    hostChange(value: any) {
 
     }
 
@@ -55,23 +59,38 @@ export class HomeComponent implements OnInit {
     }
 
     highlight(row) {
-        this.selectedRowIndex = row._token;
+        this.selectedRowIndex = row.token;
         this.selectedDevice = row;
     }
 
     stop() {
-        this._context.stopDevice(this.selectedHost['url'], 'platform', this.selectedDevice['_platform'], 'token', this.selectedDevice['_token'], "name", this.selectedDevice['_name'])
+        this._context.stopDevice(this.selectedHost['url'], 'platform', this.selectedDevice['platform'], 'token', this.selectedDevice['token'], "name", this.selectedDevice['name'])
             .subscribe((d) => {
                 console.log(d);
+            }, (error) => {
+                console.log(error);
             });
     }
 
     boot() {
-        this._context.bootDevice(this.selectedHost['url'], 'platform', this.selectedDevice['_platform'], 'token', this.selectedDevice['_token'], "name", this.selectedDevice['_name'])
+        this._context.bootDevice(this.selectedHost['url'], 'platform', this.selectedDevice['platform'], 'token', this.selectedDevice['token'],  this.selectedDevice)
             .subscribe((d) => {
                 this.selectedDevice = d[0];
-                this.dataSource.data.find((v)=>{ return v === d[0]})[0] = d
+                this.dataSource.data.find((v) => { return v['token'] === d[0]['token'] })[0] = d
                 console.log(d[0]);
+            }, (error) => {
+                console.log(error);
+            });
+    }
+
+    update() {
+        this._context.update(this.selectedHost['url'], this.selectedDevice['token'],  this.selectedDevice)
+            .subscribe((d) => {
+                this.selectedDevice = d[0];
+                this.dataSource.data.find((v) => { return v['token'] === d[0]['token'] })[0] = d
+                console.log(d[0]);
+            }, (error) => {
+                console.log(error);
             });
     }
 }

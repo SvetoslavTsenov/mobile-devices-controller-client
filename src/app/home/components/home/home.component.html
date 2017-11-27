@@ -1,13 +1,32 @@
 <div class="flex-container">
 
-    <div class="container">
-        <mat-form-field>
-            <mat-select placeholder="host address" [(ngModel)]="selectedHost" (change)="hostChange($event)">
-                <mat-option *ngFor="let host of hosts" [value]="host">
-                    <p> {{ host.name }} {{ host.url }} </p>
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+    <div class="left-right-container container">
+        <mat-card>
+            <mat-card-content>
+                <mat-form-field>
+                    <mat-select placeholder="host address" [(ngModel)]="selectedHost" (change)="hostChange($event)">
+                        <mat-option *ngFor="let host of hosts" [value]="host">
+                            <p> {{ host.name }} {{ host.url }} </p>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea matInput placeholder="platform" [(ngModel)]="searchedQuery.platform" #query></textarea>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea matInput placeholder="api" [(ngModel)]="searchedQuery.apiLevel" #query></textarea>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea matInput placeholder="name" [(ngModel)]="searchedQuery.name" #query></textarea>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea matInput placeholder="status" [(ngModel)]="searchedQuery.status" #query></textarea>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button (click)="find(query)">Get devices</button>
+            </mat-card-actions>
+        </mat-card> 
     </div>
 
     <div class="container example-container mat-elevation-z8">
@@ -19,74 +38,59 @@
 
         <mat-table #table [dataSource]="dataSource">
 
-            <ng-container matColumnDef="_status">
+            <ng-container matColumnDef="status">
                 <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element._status}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="_name">
+            <ng-container matColumnDef="apiLevel">
+                <mat-header-cell *matHeaderCellDef> Version </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.apiLevel}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element._name}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="_token">
+            <ng-container matColumnDef="token">
                 <mat-header-cell *matHeaderCellDef> Token </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element._token}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.token}} </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex === row._token}" (click)="highlight(row)">
+            <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex === row.token}" (click)="highlight(row)">
             </mat-row>
         </mat-table>
         <mat-spinner class="spinner" *ngIf='loading'></mat-spinner>
 
     </div>
 
-    <div class="container" *ngIf="selectedDevice!==undefined">
+    <div class="container left-right-container" *ngIf="selectedDevice!==undefined">
         <mat-card class="example-card">
             <mat-card-header>
                 <div mat-card-avatar class="md-title"></div>
-                <mat-card-title>{{ selectedDevice._name }}</mat-card-title>
-                <mat-card-subtitle>{{ selectedDevice._token }}</mat-card-subtitle>
+                <mat-card-title>{{ selectedDevice.name }}</mat-card-title>
+                <mat-card-subtitle>{{ selectedDevice.token }}</mat-card-subtitle>
+                <mat-card-subtitle>{{ selectedDevice.apiLevel }}</mat-card-subtitle>
             </mat-card-header>
             <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
             <mat-card-content>
-                <p>
-                    {{ selectedDevice._status }}
-                </p>
-                <p>
-                    {{ selectedDevice._busySince }}
-                </p>
-                <p>
-                    {{ selectedDevice._startedAt}}
-                </p>
+                <mat-form-field>
+                    <textarea matInput placeholder="status" [(ngModel)]="selectedDevice.status"></textarea>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea matInput placeholder="busySince" [(ngModel)]="selectedDevice.busySince"></textarea>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea matInput placeholder="startedAt" [(ngModel)]="selectedDevice.startedAt"></textarea>
+                </mat-form-field>
             </mat-card-content>
             <mat-card-actions>
                 <button mat-button (click)="stop()">STOP</button>
                 <button mat-button (click)="boot()">BOOT</button>
+                <button mat-button (click)="update()">UPDATE</button>
             </mat-card-actions>
         </mat-card>
     </div>
 </div>
-
-<!-- 
-<div class="example-container">
-    <mat-form-field>
-        <input matInput placeholder="Name" [(ngModel)]="selectedDevice._name" name="name"/>
-    </mat-form-field>
-
-    <mat-form-field>
-        <textarea matInput placeholder="Textarea"></textarea>
-    </mat-form-field>
-
-    <mat-form-field>
-        <mat-select placeholder="Select">
-            <mat-option value="option">Option</mat-option>
-        </mat-select>
-    </mat-form-field>
-    <div>
-        <button mat-button (click)="update()">Click me!</button>
-
-    </div>
-
-</div> -->
