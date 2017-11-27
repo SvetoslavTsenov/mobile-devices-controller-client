@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit {
     }
 
     boot() {
-        this._context.bootDevice(this.selectedHost['url'], 'platform', this.selectedDevice['platform'], 'token', this.selectedDevice['token'],  this.selectedDevice)
+        this._context.bootDevice(this.selectedHost['url'], 'platform', this.selectedDevice['platform'], 'token', this.selectedDevice['token'])
             .subscribe((d) => {
                 this.selectedDevice = d[0];
                 this.dataSource.data.find((v) => { return v['token'] === d[0]['token'] })[0] = d
