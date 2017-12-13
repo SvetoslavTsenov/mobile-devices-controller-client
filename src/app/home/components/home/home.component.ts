@@ -12,14 +12,15 @@ import { MatTableDataSource } from '@angular/material';
 export class HomeComponent implements OnInit {
 
     hosts = [
-        { name: "svs", url: "http://localhost:8000" },
+        { name: "svs", url: "http://localhost:8700" },
+   
 
     ];
 
     loading = false;
-    displayedColumns = ['status', 'name', 'token'];
+    displayedColumns = ['status', 'name', 'token']; 
     selectedRowIndex: any = -1;
-    selectedHost: any;
+    selectedHost: any; 
     selectedDevice = {};
     dataSource = new MatTableDataSource();
     searchedQuery: { platform, apiLevel, name, status } = { platform: undefined, apiLevel: undefined, name: undefined, status: undefined };
@@ -45,7 +46,19 @@ export class HomeComponent implements OnInit {
                 this.loading = false;
             }
         );
+    }
 
+    refresh(any) {
+        this.loading = true;
+        this.dataSource = new MatTableDataSource();
+        this._context.refresh(this.selectedHost['url'], this.searchedQuery).subscribe(
+            (data) => {
+                this.dataSource = new MatTableDataSource(data);
+                this.loading = false;
+            }, (error) => {
+                this.loading = false;
+            }
+        );
     }
 
     hostChange(value: any) {
