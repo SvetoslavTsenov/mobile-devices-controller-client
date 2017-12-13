@@ -13,7 +13,6 @@ export class HomeComponent implements OnInit {
 
     hosts = [
         { name: "svs", url: "http://localhost:8700" },
-   
 
     ];
 
@@ -21,7 +20,7 @@ export class HomeComponent implements OnInit {
     displayedColumns = ['status', 'name', 'token']; 
     selectedRowIndex: any = -1;
     selectedHost: any; 
-    selectedDevice = {};
+    selectedDevice :any;
     dataSource = new MatTableDataSource();
     searchedQuery: { platform, apiLevel, name, status } = { platform: undefined, apiLevel: undefined, name: undefined, status: undefined };
 
@@ -80,6 +79,8 @@ export class HomeComponent implements OnInit {
         this._context.stopDevice(this.selectedHost['url'], 'platform', this.selectedDevice['platform'], 'token', this.selectedDevice['token'], "name", this.selectedDevice['name'])
             .subscribe((d) => {
                 console.log(d);
+                this.selectedDevice = d[0];
+                this.dataSource.data.find((v) => { return v['token'] === d[0]['token'] })[0] = d
             }, (error) => {
                 console.log(error);
             });
